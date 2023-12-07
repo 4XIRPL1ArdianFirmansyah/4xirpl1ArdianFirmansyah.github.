@@ -67,7 +67,7 @@ if (isset($_GET['id_menu'])) {
                     <p>Deskripsi</p>
                     <p></p>
                     <p>
-                        <a href="beli.php"><button type="button" style="background-color: #b6895b; border-radius: 0.2rem; padding: 0.3rem 1rem; color: white;">Pesan</button></a>
+                        <a href="beli.php?id_menu=<?= $id_menu ?>"><button type="button" style="background-color: #b6895b; border-radius: 0.2rem; padding: 0.3rem 1rem; color: white;">Pesan</button></a>
                         <a href="produk.php"><button type="button" style="background-color: #b6895b; border-radius: 0.2rem; padding: 0.3rem 1rem; color: white;">Menu lainnya   </button></a>
                      </p>
 
