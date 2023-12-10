@@ -10,7 +10,7 @@ include 'koneksi.php';
           $cek_data = mysqli_query($koneksi, "SELECT * FROM user WHERE username = '$user' AND password = '$password'");
           $hasil = mysqli_fetch_array($cek_data);
           $status = $hasil['status'];
-          $login_user = $hasil['username'];
+          $login_user = $hasil;
           $row = mysqli_num_rows($cek_data);
 
 

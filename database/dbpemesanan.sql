@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 10, 2023 at 01:19 PM
+-- Generation Time: Dec 10, 2023 at 02:56 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -30,7 +30,8 @@ SET time_zone = "+00:00";
 CREATE TABLE `keranjang` (
   `id` int(50) NOT NULL,
   `id_menu` varchar(50) NOT NULL,
-  `jumlah` int(50) NOT NULL
+  `jumlah` int(50) NOT NULL,
+  `user` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
 
 -- --------------------------------------------------------
@@ -70,8 +71,8 @@ CREATE TABLE `pemesanan` (
 --
 
 INSERT INTO `pemesanan` (`id_pemesanan`, `nama_pemesan`, `tanggal_pemesanan`, `total_belanja`) VALUES
-(78, 'user', '2023-12-10', 10000),
-(79, 'user', '2023-12-10', 65000);
+(82, 'Ardian F', '2023-12-10', 12000),
+(83, 'user', '2023-12-10', 35000);
 
 -- --------------------------------------------------------
 
@@ -91,8 +92,10 @@ CREATE TABLE `pemesanan_produk` (
 --
 
 INSERT INTO `pemesanan_produk` (`id_pemesanan_produk`, `id_pemesanan`, `id_menu`, `jumlah`) VALUES
-(102, 78, '26', 1),
-(103, 79, '28', 5);
+(112, 82, '24', 1),
+(113, 83, '28', 1),
+(114, 83, '26', 1),
+(115, 83, '24', 1);
 
 -- --------------------------------------------------------
 
@@ -203,7 +206,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `keranjang`
 --
 ALTER TABLE `keranjang`
-  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
 
 --
 -- AUTO_INCREMENT for table `komentar`
@@ -215,13 +218,13 @@ ALTER TABLE `komentar`
 -- AUTO_INCREMENT for table `pemesanan`
 --
 ALTER TABLE `pemesanan`
-  MODIFY `id_pemesanan` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+  MODIFY `id_pemesanan` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 
 --
 -- AUTO_INCREMENT for table `pemesanan_produk`
 --
 ALTER TABLE `pemesanan_produk`
-  MODIFY `id_pemesanan_produk` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
+  MODIFY `id_pemesanan_produk` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
 
 --
 -- AUTO_INCREMENT for table `produk`

@@ -4,7 +4,9 @@ session_start();
 if (!isset($_SESSION['login_user'])) {
   header("location: login.php");
 }
-$result = mysqli_query($koneksi, "SELECT * FROM keranjang");
+// var_dump($_SESSION['login_user']);
+$user = $_SESSION['login_user']['id_user'];
+$result = mysqli_query($koneksi, "SELECT * FROM keranjang where user = '$user'");
 // $listKeranjang = mysqli_fetch_assoc($result);
 // var_dump($listKeranjang['id_menu']);
 // echo mysqli_num_rows($result);
@@ -71,7 +73,7 @@ $result = mysqli_query($koneksi, "SELECT * FROM keranjang");
           <tr>
             <td><?php echo $nomor; ?></td>
             <!-- <td><?php echo $_SESSION["username"]; ?></td> -->
-            <td><?= $_SESSION['login_user'] ?></td>
+            <td><?= $_SESSION['login_user']['username'] ?></td>
             <td><?php echo $pecah["nama_menu"]; ?></td>
             <td>Rp. <?php echo number_format($pecah["harga"]); ?></td>
             <!-- <td><?php echo $jumlah; ?></td> -->
@@ -131,9 +133,10 @@ $result = mysqli_query($koneksi, "SELECT * FROM keranjang");
     <?php
     if (isset($_POST['konfirm'])) {
       $tanggal_pemesanan = date("Y-m-d");
-      $username = $_SESSION['login_user'];
-      $user = mysqli_query($koneksi, "SELECT username from user where username = '$username'")->fetch_assoc();
+      $id_user = $_SESSION['login_user']['id_user'];
+      $user = mysqli_query($koneksi, "SELECT username from user where id_user = '$id_user'")->fetch_assoc();
       $username = $user['username'];
+      // var_dump($username);
       $pesanan = mysqli_query($koneksi, "SELECT * FROM keranjang");
 
       $insert = mysqli_query($koneksi, "INSERT INTO pemesanan (nama_pemesan, tanggal_pemesanan, total_belanja) VALUES ('$username', '$tanggal_pemesanan', '$totalbelanja')");
