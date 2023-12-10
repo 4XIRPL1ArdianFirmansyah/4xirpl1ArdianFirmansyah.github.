@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 07 Des 2023 pada 12.58
--- Versi server: 10.4.24-MariaDB
--- Versi PHP: 8.1.6
+-- Generation Time: Dec 10, 2023 at 01:19 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,17 +24,29 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `komentar`
+-- Table structure for table `keranjang`
+--
+
+CREATE TABLE `keranjang` (
+  `id` int(50) NOT NULL,
+  `id_menu` varchar(50) NOT NULL,
+  `jumlah` int(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `komentar`
 --
 
 CREATE TABLE `komentar` (
   `id` int(11) NOT NULL,
   `nama` varchar(100) NOT NULL,
   `komen` varchar(250) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `komentar`
+-- Dumping data for table `komentar`
 --
 
 INSERT INTO `komentar` (`id`, `nama`, `komen`) VALUES
@@ -43,36 +55,28 @@ INSERT INTO `komentar` (`id`, `nama`, `komen`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `pemesanan`
+-- Table structure for table `pemesanan`
 --
 
 CREATE TABLE `pemesanan` (
   `id_pemesanan` int(50) NOT NULL,
+  `nama_pemesan` varchar(50) NOT NULL DEFAULT '',
   `tanggal_pemesanan` date NOT NULL,
   `total_belanja` int(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `pemesanan`
+-- Dumping data for table `pemesanan`
 --
 
-INSERT INTO `pemesanan` (`id_pemesanan`, `tanggal_pemesanan`, `total_belanja`) VALUES
-(51, '2023-10-29', 12000),
-(52, '2023-10-29', 26000),
-(53, '2023-10-29', 30000),
-(54, '2023-10-30', 30000000),
-(55, '2023-11-03', 36000),
-(56, '2023-11-06', 32000),
-(57, '2023-11-06', 10000),
-(58, '2023-11-07', 20000),
-(59, '2023-11-20', 12000),
-(60, '2023-11-21', 60080000),
-(62, '2023-12-07', 34000);
+INSERT INTO `pemesanan` (`id_pemesanan`, `nama_pemesan`, `tanggal_pemesanan`, `total_belanja`) VALUES
+(78, 'user', '2023-12-10', 10000),
+(79, 'user', '2023-12-10', 65000);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `pemesanan_produk`
+-- Table structure for table `pemesanan_produk`
 --
 
 CREATE TABLE `pemesanan_produk` (
@@ -80,54 +84,45 @@ CREATE TABLE `pemesanan_produk` (
   `id_pemesanan` int(50) NOT NULL,
   `id_menu` varchar(50) NOT NULL,
   `jumlah` int(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `pemesanan_produk`
+-- Dumping data for table `pemesanan_produk`
 --
 
 INSERT INTO `pemesanan_produk` (`id_pemesanan_produk`, `id_pemesanan`, `id_menu`, `jumlah`) VALUES
-(49, 54, '24', 1),
-(50, 55, '21', 3),
-(51, 56, '26', 1),
-(52, 56, '21', 1),
-(53, 57, '22', 1),
-(54, 58, '22', 2),
-(55, 59, '21', 1),
-(56, 60, '26', 4),
-(57, 60, '24', 2),
-(58, 61, '24', 2),
-(59, 62, '26', 1),
-(60, 62, '24', 2);
+(102, 78, '26', 1),
+(103, 79, '28', 5);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `produk`
+-- Table structure for table `produk`
 --
 
 CREATE TABLE `produk` (
   `id_menu` int(50) NOT NULL,
   `nama_menu` varchar(50) NOT NULL,
   `harga` int(50) NOT NULL,
+  `deskripsi` text NOT NULL DEFAULT '---',
   `gambar` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `produk`
+-- Dumping data for table `produk`
 --
 
-INSERT INTO `produk` (`id_menu`, `nama_menu`, `harga`, `gambar`) VALUES
-(24, 'Pisan Ijo', 12000, '3.jpg'),
-(26, 'Choco Strawberry', 10000, '2.jpg'),
-(28, 'Orange Zuzuzu', 13000, '7.jpg'),
-(29, 'Creamy Strawberry', 3000, '8.jpg'),
-(30, 'Kopi Cincau', 10000, 'eskopi.jpg');
+INSERT INTO `produk` (`id_menu`, `nama_menu`, `harga`, `deskripsi`, `gambar`) VALUES
+(24, 'Pisan Ijo', 12000, '', '3.jpg'),
+(26, 'Choco Strawberry', 10000, '', '2.jpg'),
+(28, 'Orange Zuzuzu', 13000, '', '7.jpg'),
+(29, 'Creamy Strawberry', 3000, '', '8.jpg'),
+(30, 'Kopi Cincau', 10000, '', 'eskopi.jpg');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `user`
+-- Table structure for table `user`
 --
 
 CREATE TABLE `user` (
@@ -140,10 +135,10 @@ CREATE TABLE `user` (
   `alamat` varchar(25) NOT NULL,
   `hp` varchar(25) NOT NULL,
   `status` enum('admin','user','','') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `user`
+-- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id_user`, `username`, `password`, `nama_lengkap`, `jenis_kelamin`, `tanggal_lahir`, `alamat`, `hp`, `status`) VALUES
@@ -165,65 +160,77 @@ INSERT INTO `user` (`id_user`, `username`, `password`, `nama_lengkap`, `jenis_ke
 --
 
 --
--- Indeks untuk tabel `komentar`
+-- Indexes for table `keranjang`
+--
+ALTER TABLE `keranjang`
+  ADD PRIMARY KEY (`id`) USING BTREE;
+
+--
+-- Indexes for table `komentar`
 --
 ALTER TABLE `komentar`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `pemesanan`
+-- Indexes for table `pemesanan`
 --
 ALTER TABLE `pemesanan`
   ADD PRIMARY KEY (`id_pemesanan`);
 
 --
--- Indeks untuk tabel `pemesanan_produk`
+-- Indexes for table `pemesanan_produk`
 --
 ALTER TABLE `pemesanan_produk`
   ADD PRIMARY KEY (`id_pemesanan_produk`);
 
 --
--- Indeks untuk tabel `produk`
+-- Indexes for table `produk`
 --
 ALTER TABLE `produk`
-  ADD PRIMARY KEY (`id_menu`);
+  ADD PRIMARY KEY (`id_menu`) USING BTREE;
 
 --
--- Indeks untuk tabel `user`
+-- Indexes for table `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id_user`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `komentar`
+-- AUTO_INCREMENT for table `keranjang`
+--
+ALTER TABLE `keranjang`
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+
+--
+-- AUTO_INCREMENT for table `komentar`
 --
 ALTER TABLE `komentar`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
--- AUTO_INCREMENT untuk tabel `pemesanan`
+-- AUTO_INCREMENT for table `pemesanan`
 --
 ALTER TABLE `pemesanan`
-  MODIFY `id_pemesanan` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `id_pemesanan` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
--- AUTO_INCREMENT untuk tabel `pemesanan_produk`
+-- AUTO_INCREMENT for table `pemesanan_produk`
 --
 ALTER TABLE `pemesanan_produk`
-  MODIFY `id_pemesanan_produk` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id_pemesanan_produk` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
 
 --
--- AUTO_INCREMENT untuk tabel `produk`
+-- AUTO_INCREMENT for table `produk`
 --
 ALTER TABLE `produk`
   MODIFY `id_menu` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
--- AUTO_INCREMENT untuk tabel `user`
+-- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
   MODIFY `id_user` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
