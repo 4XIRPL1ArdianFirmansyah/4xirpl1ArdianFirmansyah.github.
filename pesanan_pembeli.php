@@ -3,13 +3,16 @@ include('koneksi.php');
 session_start();
 if (!isset($_SESSION['login_user'])) {
   header("location: login.php");
-} else
-?>
-<?php
-if (empty($_SESSION["pesanan"]) or !isset($_SESSION["pesanan"])) {
-
-  echo "<script>location= 'pesanan_pembeli.php'</script>";
 }
+$result = mysqli_query($koneksi, "SELECT * FROM keranjang");
+// $listKeranjang = mysqli_fetch_assoc($result);
+// var_dump($listKeranjang['id_menu']);
+// echo mysqli_num_rows($result);
+// if (mysqli_num_rows($result) <= 0) {
+
+// echo "<script>location= 'pesanan_pembeli.php'</script>";
+// echo '<h1 style="text-align: center;">Tidak ada item</h1>';
+// }
 ?>
 
 <!doctype html>
@@ -35,7 +38,7 @@ if (empty($_SESSION["pesanan"]) or !isset($_SESSION["pesanan"])) {
   <div class="container">
     <div class="judul-pesanan mt-5">
 
-      <h3 class="text-center font-weight-bold">PESANAN ANDA</h3>
+      <h3 class="text-center font-weight-bold">KERANJANG ANDA</h3>
 
     </div>
     <table class="table table-bordered" id="example">
@@ -53,27 +56,34 @@ if (empty($_SESSION["pesanan"]) or !isset($_SESSION["pesanan"])) {
       <tbody>
         <?php $nomor = 1; ?>
         <?php $totalbelanja = 0; ?>
-        <?php foreach ($_SESSION["pesanan"] as $id_menu => $jumlah) : ?>
-
-          <?php
-          include('koneksi.php');
+        <?php foreach ($result as $keranjang) :
+          // var_dump($keranjang);
+          $id_menu = $keranjang['id_menu'];
           $ambil = mysqli_query($koneksi, "SELECT * FROM produk WHERE id_menu='$id_menu'");
-          $ambil1 = mysqli_query($koneksi, "SELECT * FROM user");
+          // $ambil1 = mysqli_query($koneksi, "SELECT * FROM user");
           $pecah = $ambil->fetch_assoc();
-          $pecah1 = $ambil1->fetch_assoc();
+          // $pecah1 = $ambil1->fetch_assoc();
+          $jumlah = $keranjang['jumlah'];
           $subharga = $pecah["harga"] * $jumlah;
-          ?>
+        ?>
 
 
           <tr>
             <td><?php echo $nomor; ?></td>
-            <td><?php echo $pecah1["username"]; ?></td>
+            <!-- <td><?php echo $_SESSION["username"]; ?></td> -->
+            <td><?= $_SESSION['login_user'] ?></td>
             <td><?php echo $pecah["nama_menu"]; ?></td>
             <td>Rp. <?php echo number_format($pecah["harga"]); ?></td>
-            <td><?php echo $jumlah; ?></td>
+            <!-- <td><?php echo $jumlah; ?></td> -->
+            <td>
+              <form action="update_pesanan.php?id_keranjang=<?php echo $keranjang['id'] ?>" method="post">
+                <input type="number" value="<?= $jumlah ?>" name="jumlah" min="1" style="max-width: 50px; text-align: center;">
+              <button class="btn badge badge-primary">Perbarui</button>
+              </form>
+            </td>
             <td>Rp. <?php echo number_format($subharga); ?></td>
             <td>
-              <a href="hapus_pesanan.php?id_menu=<?php echo $id_menu ?>" class="badge badge-danger">Hapus</a>
+              <a href="hapus_pesanan.php?id_keranjang=<?php echo $keranjang['id'] ?>" class="btn badge badge-danger">Hapus</a>
             </td>
           </tr>
 
@@ -97,9 +107,9 @@ if (empty($_SESSION["pesanan"]) or !isset($_SESSION["pesanan"])) {
       <a href="produk.php" class="btn btn-primary btn-sm">Lihat Menu</a>
       <button class="btn btn-success btn-sm" name="konfirm">Konfirmasi Pesanan</button>
     </form>
-   
 
-  
+
+
     <div class="modal fade" id="konfirmasiPesanan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <form class="modal-dialog">
         <div class="modal-content">
@@ -121,21 +131,34 @@ if (empty($_SESSION["pesanan"]) or !isset($_SESSION["pesanan"])) {
     <?php
     if (isset($_POST['konfirm'])) {
       $tanggal_pemesanan = date("Y-m-d");
+      $username = $_SESSION['login_user'];
+      $user = mysqli_query($koneksi, "SELECT username from user where username = '$username'")->fetch_assoc();
+      $username = $user['username'];
+      $pesanan = mysqli_query($koneksi, "SELECT * FROM keranjang");
 
-      $insert = mysqli_query($koneksi, "INSERT INTO pemesanan (tanggal_pemesanan, total_belanja) VALUES ('$tanggal_pemesanan', '$totalbelanja')");
+      $insert = mysqli_query($koneksi, "INSERT INTO pemesanan (nama_pemesan, tanggal_pemesanan, total_belanja) VALUES ('$username', '$tanggal_pemesanan', '$totalbelanja')");
 
 
       $id_terbaru = $koneksi->insert_id;
 
-      foreach ($_SESSION["pesanan"] as $id_menu => $jumlah) {
+      foreach ($pesanan as $item) {
+        $jumlah = $item['jumlah'];
+        $id_menu = $item['id_menu'];
         $insert = mysqli_query($koneksi, "INSERT INTO pemesanan_produk (id_pemesanan, id_menu, jumlah) 
               VALUES ('$id_terbaru', '$id_menu', '$jumlah') ");
+              $id_keranjang = $item['id'];
+              if($insert) {
+                mysqli_query($koneksi, "DELETE from keranjang where id = $id_keranjang");
+              }
       }
 
 
       unset($_SESSION["pesanan"]);
+      
+      // header('location: pesanan_pembeli.php');
 
-      echo "<script>alert('Pemesanan Sukses!');</script>";
+      // echo "<script>alert('Pemesanan Sukses!'); location= 'pesanan_pembeli.php'</script>";
+
       echo "<script>location= 'produk.php'</script>";
     }
     ?>

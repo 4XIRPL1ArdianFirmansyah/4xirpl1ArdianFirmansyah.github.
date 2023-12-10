@@ -101,10 +101,9 @@ if(isset($_POST["submit"])) {
     
 
     <a href="pesanan.php" class="btn btn-success btn-sm">Kembali</a>
-    <
-    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <!-- <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">
       Konfirmasi Pembayaran
-    </button>
+    </button> -->
 
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

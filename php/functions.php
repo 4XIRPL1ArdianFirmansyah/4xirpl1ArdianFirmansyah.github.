@@ -3,7 +3,8 @@ $conn = mysqli_connect('localhost', 'root', '', 'db_coffe_shop');
 
 function query($query) {
   global $conn;
-  return mysqli_query($conn, $query);
+  $result = mysqli_query($conn, $query);
+  return $result;
 }
 
 function insert($query) {

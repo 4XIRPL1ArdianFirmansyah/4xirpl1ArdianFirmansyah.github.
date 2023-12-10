@@ -66,6 +66,7 @@
             <th scope="col">No.</th>
         
             <th scope="col">Id Pesanan</th>
+            <th scope="col">Pemesan</th>
             <th scope="col">Tanggal Pesan</th>
             <th scope="col">Total Bayar</th>
             <th scope="col">Opsi</th>
@@ -77,23 +78,25 @@
           <?php 
             $ambil = mysqli_query($koneksi, 'SELECT * FROM pemesanan');
             $pecah = $ambil->fetch_assoc();
+            // var_dump($pecah);
         
             $result = mysqli_fetch_all($ambil, MYSQLI_ASSOC);
           ?>
-          <?php foreach($result as $result) : ?>
+          <?php foreach($ambil as $pesanan) : ?>
 
           <tr>
             <th scope="row" style='color: white'><?php echo $nomor; ?></th>
   
-            <td style='color: white'><?php echo $result["id_pemesanan"]; ?></td>
-            <td style='color: white'><?php echo $result["tanggal_pemesanan"]; ?></td>
-            <td style='color: white'>Rp. <?php echo number_format($result["total_belanja"]); ?></td>
+            <td style='color: white'><?php echo $pesanan["id_pemesanan"]; ?></td>
+            <td style='color: white'><?php echo $pesanan["nama_pemesan"]; ?></td>
+            <td style='color: white'><?php echo $pesanan["tanggal_pemesanan"]; ?></td>
+            <td style='color: white'>Rp. <?php echo number_format($pesanan["total_belanja"]); ?></td>
             <td>
               
-              <a href="detail_pesanan.php?id=<?php echo $result['id_pemesanan'] ?>" class="badge badge-primary">Detail</a>
+              <a href="detail_pesanan.php?id=<?php echo $pesanan['id_pemesanan'] ?>" class="badge badge-primary">Detail</a>
              
 
-              <a href="hapus_pesananpembeli.php?id=<?php echo $result['id_pemesanan'] ?>" class="badge badge-danger">Hapus Data</a>
+              <a href="hapus_pesananpembeli.php?id=<?php echo $pesanan['id_pemesanan'] ?>" class="badge badge-danger">Hapus Data</a>
             </td>
           </tr>
           <?php $nomor++; ?>
